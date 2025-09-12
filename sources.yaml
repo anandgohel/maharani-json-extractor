@@ -4,32 +4,36 @@ web:
   - https://www.maharaniweddings.com/indian-wedding-vendors
   - https://www.maharaniweddings.com/certified-indian-wedding-vendors
 
-# Social sources via Apify (requires APIFY_TOKEN secret)
 apify:
   # Instagram profile posts
   - actor: apify/instagram-scraper
     input:
       directUrls:
         - https://www.instagram.com/maharaniweddings/
-      resultsLimit: 24           # tune for volume/cost
+      resultsLimit: 24
       proxyConfiguration:
         useApifyProxy: true
+      # Many IG actors need a session id to return data:
+      # Add a Codespaces & Actions secret named IG_SESSION_ID, then:
+      sessionId: "${ENV:IG_SESSION_ID}"
 
-  # Pinterest profile/boards
+  # Pinterest profile/boards (usually works without extra auth)
   - actor: apify/pinterest-scraper
     input:
       startUrls:
         - url: https://www.pinterest.com/maharaniwedding/
-      maxPins: 40                # tune for volume/cost
+      maxPins: 40
       proxyConfiguration:
         useApifyProxy: true
 
-  # Facebook page posts
+  # Facebook page posts (may require cookies for reliability)
   - actor: apify/facebook-pages-scraper
     input:
       startUrls:
         - url: https://www.facebook.com/MaharaniWeddings/
-      maxPosts: 25               # tune for volume/cost
+      maxPosts: 25
       includeNestedComments: false
       proxyConfiguration:
         useApifyProxy: true
+      # Optional: if the actor needs cookies, set FB_COOKIES_JSON as a secret
+      # cookies: "${ENV:FB_COOKIES_JSON}"
