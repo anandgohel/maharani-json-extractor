@@ -1,0 +1,35 @@
+{
+  "name": "Maharani JSON Extractor (Py + Node)",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": false,
+      "upgradePackages": true
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.11"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "onCreateCommand": "sudo apt-get update && sudo apt-get install -y jq ripgrep fd-find && pip install --upgrade pip",
+  "postCreateCommand": "pip install -r requirements.txt || true",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "editor.formatOnSave": true
+      }
+    }
+  },
+  "remoteEnv": {
+    "FIRECRAWL_API_KEY": "${localEnv:FIRECRAWL_API_KEY}",
+    "APIFY_TOKEN": "${localEnv:APIFY_TOKEN}"
+  }
+}
