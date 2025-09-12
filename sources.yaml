@@ -3,7 +3,33 @@ web:
   - https://www.maharaniweddings.com/gallery
   - https://www.maharaniweddings.com/indian-wedding-vendors
   - https://www.maharaniweddings.com/certified-indian-wedding-vendors
-social:
-  - https://www.instagram.com/maharaniweddings
-  - https://www.pinterest.com/maharaniwedding/
-  - https://www.facebook.com/MaharaniWeddings/
+
+# Social sources via Apify (requires APIFY_TOKEN secret)
+apify:
+  # Instagram profile posts
+  - actor: apify/instagram-scraper
+    input:
+      directUrls:
+        - https://www.instagram.com/maharaniweddings/
+      resultsLimit: 24           # tune for volume/cost
+      proxyConfiguration:
+        useApifyProxy: true
+
+  # Pinterest profile/boards
+  - actor: apify/pinterest-scraper
+    input:
+      startUrls:
+        - url: https://www.pinterest.com/maharaniwedding/
+      maxPins: 40                # tune for volume/cost
+      proxyConfiguration:
+        useApifyProxy: true
+
+  # Facebook page posts
+  - actor: apify/facebook-pages-scraper
+    input:
+      startUrls:
+        - url: https://www.facebook.com/MaharaniWeddings/
+      maxPosts: 25               # tune for volume/cost
+      includeNestedComments: false
+      proxyConfiguration:
+        useApifyProxy: true
